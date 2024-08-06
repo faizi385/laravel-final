@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global CSS file or within a <style> section in a layout blade file */
+.card {
+    border: 1px solid #e3e6e8;
+    border-radius: .375rem;
+    overflow: hidden;
+    background: #ffffff; /* White background for cards */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Hover Effect */
+.card.hover-effect:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background: #f8f9fa; /* Slightly different background color on hover */
+    border-color: #007bff; /* Blue border color on hover */
+}
+
+/* Additional styling if needed */
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666;
+}
+/* Increased specificity */
+/* Forceful override */
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #c54242 !important;
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+    background-color: #f9f9f9 !important;
+    margin-left: 5px !important;
+    font-size: 0.875rem !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.25) !important;
+    outline: none !important;
+}
