@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\PostsImport;
 
 class PostController extends Controller
 {
@@ -52,29 +54,37 @@ class PostController extends Controller
 
     // Store a newly created post in storage
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'content' => 'required|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'tags' => 'nullable|array',
-        'tags.*' => 'string', // Ensure each tag is a string
-    ]);
-
-    $post = new Post();
-    $post->user_id = Auth::id();
-    $post->title = $request->input('title');
-    $post->content = $request->input('content');
-    if ($request->hasFile('image')) {
-        $post->image = $request->file('image')->store('images', 'public');
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string', // Ensure each tag is a string
+        ]);
+    
+        $post = new Post();
+        $post->user_id = Auth::id(); // Set the user_id to the currently authenticated user
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+    
+        // Handle file upload if present
+        if ($request->hasFile('image')) {
+            $post->image = $request->file('image')->store('images', 'public');
+        }
+    
+        // Encode tags as a JSON array
+        $post->tags = json_encode($request->input('tags', []));
+    
+        // Set default visibility and approval
+        $post->approved = true; // Set to true to make it visible immediately
+        $post->active = true;   // Set to true to make it visible immediately
+    
+        $post->save();
+    
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
-    $post->tags = json_encode($request->input('tags', []));
-    $post->approved = true; // Set to true to make it visible immediately
-    $post->active = true;   // Set to true to make it visible immediately
-    $post->save();
-
-    return redirect()->route('posts.index')->with('success', 'Post created successfully.');
-}
+    
 
     // Show the specified post
     public function show(Post $post)
@@ -182,6 +192,20 @@ public function update(Request $request, Post $post)
         $post->save();
         return redirect()->route('posts.index')->with('success', 'Post activated successfully.');
     }
+ public function import(Request $request)
+{
+    $request->validate([
+        'import_file' => 'required|mimes:xlsx,xls',
+    ]);
+
+    // Perform the import
+    Excel::import(new PostsImport, $request->file('import_file'));
+
+    // Redirect to the posts index with a success message
+    return redirect()->route('posts.index')
+                     ->with('success', 'Posts imported successfully.');
+}
+
 
     // Approve a post (only for superadmins)
     public function approve(Post $post)

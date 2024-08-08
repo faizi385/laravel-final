@@ -6,15 +6,15 @@
             <div class="card-body text-center">
                 <h3 class="card-title mb-4">Welcome {{ Auth::user()->name }}</h3>
                 <p class="card-text mb-4">Manage your posts and view the latest feed from here.</p>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
                     @if (Auth::user()->hasRole('superadmin'))
-                        <a href="{{ route('posts.index') }}" class="btn btn-primary mx-2">Feed</a>
-                        <a href="{{ route('posts.index') }}" class="btn btn-success mx-2">Manage Posts</a>
-                        <a href="{{ route('users.index') }}" class="btn btn-warning mx-2">Manage Users</a>
+                        <a href="{{ route('posts.index') }}" class="btn btn-primary">Feed</a>
+                        <a href="{{ route('posts.index') }}" class="btn btn-success">Manage Posts</a>
+                        <a href="{{ route('users.index') }}" class="btn btn-warning">Manage Users</a>
                     @else
-                        <a href="{{ route('posts.myPosts') }}" class="btn btn-info mx-2">View My Posts</a>
-                        <a href="{{ route('posts.index') }}" class="btn btn-primary mx-2">Feed</a>
-                        <a href="{{ route('posts.create') }}" class="btn btn-success mx-2">Create Post</a>
+                        <a href="{{ route('posts.myPosts') }}" class="btn btn-info">View My Posts</a>
+                        <a href="{{ route('posts.index') }}" class="btn btn-primary">Feed</a>
+                        <a href="{{ route('posts.create') }}" class="btn btn-success">Create Post</a>
                     @endif
                 </div>
             </div>
@@ -28,6 +28,8 @@
         background: linear-gradient(120deg, #e0f7fa, #80deea); /* Soft gradient background */
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: #333;
+        margin: 0;
+        padding: 0;
     }
     .dashboard-card {
         background: #ffffff; /* White background for card */
@@ -52,27 +54,34 @@
         font-size: 1.1rem;
         color: #666;
     }
-    .btn-primary, .btn-success, .btn-info, .btn-warning {
+    .btn {
         font-size: 1rem;
-        padding: 0.25rem 0.5rem;
+        padding: 0.5rem 1rem;
         border-radius: .5rem; /* Rounded button corners */
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
         transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .btn-primary {
         background-color: #040c1b; /* Primary button color */
-        border-color: #040c1b;
+        border: 1px solid #040c1b;
+        color: #fff;
     }
     .btn-success {
         background-color: #1e3a8a; /* Darker shade for contrast */
-        border-color: #1e3a8a;
+        border: 1px solid #1e3a8a;
+        color: #fff;
     }
     .btn-info {
         background-color: #3b82f6; /* Light blue shade */
-        border-color: #3b82f6;
+        border: 1px solid #3b82f6;
+        color: #fff;
     }
     .btn-warning {
         background-color: #fbbf24; /* Bright yellow for emphasis */
-        border-color: #fbbf24;
+        border: 1px solid #fbbf24;
+        color: #333;
     }
     .btn-primary:hover {
         background-color: #030a1b; /* Darker shade on hover */
